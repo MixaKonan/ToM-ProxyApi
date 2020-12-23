@@ -1,0 +1,15 @@
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace TomProxyApi.Models
+{
+    public class StreamContext : DbContext
+    {
+        public StreamContext(DbContextOptions<StreamContext> options)
+            : base(options)
+        {
+            
+        }
+
+        public DbSet<Stream> Streams { get; set; }
+    }
+}
