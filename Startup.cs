@@ -22,9 +22,6 @@ namespace TomProxyApi
         {
             services.AddDbContext<StreamContext>(options => 
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddDbContext<StreamerContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddControllers();
         }
@@ -47,7 +44,7 @@ namespace TomProxyApi
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=streamers}/");
+                    pattern: "{controller}/");
             });
         }
     }

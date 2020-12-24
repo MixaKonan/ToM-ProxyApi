@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TomProxyApi.Models;
@@ -6,12 +6,12 @@ using TomProxyApi.Models;
 namespace TomProxyApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/streamers")]
     public class StreamersController : Controller
     {
-        private readonly StreamerContext _db;
+        private readonly StreamContext _db;
 
-        public StreamersController(StreamerContext db)
+        public StreamersController(StreamContext db)
         {
             _db = db;
         }
