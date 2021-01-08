@@ -9,7 +9,7 @@ namespace TomProxyApi.Models
         {
             
         }
-
+        
         public DbSet<Stream> Streams { get; set; }
         public DbSet<Streamer> Streamers { get; set; }
     }

@@ -13,7 +13,7 @@ namespace TomProxyApi.Controllers
     {
         private readonly StreamContext _db;
 
-        private readonly List<string> _streamFields = new List<string>
+        private readonly string[] _streamFields =
         {
             "uuid",
             "date",
@@ -31,28 +31,23 @@ namespace TomProxyApi.Controllers
         [HttpGet]
         public List<Stream> Get(string streamerName, string orderBy = "date", string sortBy = "desc")
         {
-            var streamers = (from str in _db.Streamers select str.name).ToList();
-
-            foreach (var dbStreamerName in streamers)
+            if (_db.Streamers.Any(str => str.name == streamerName))
             {
-                if (streamerName == dbStreamerName)
+                foreach (var field in _streamFields)
                 {
-                    foreach (var field in _streamFields)
+                    if (orderBy == field)
                     {
-                        if (orderBy == field)
+                        if (sortBy == "desc" || sortBy == "asc")
                         {
-                            if (sortBy == "desc" || sortBy == "asc")
-                            {
-                                return _db.Streams.FromSqlRaw(
-                                        "SELECT * FROM streamers JOIN streams ON streamers.id = streams.streamer_id" +
-                                        $" WHERE streamers.name = '{streamerName}' ORDER BY {orderBy} {sortBy}")
+                            return _db.Streams.FromSqlRaw(
+                                    "SELECT * FROM streamers JOIN streams ON streamers.id = streams.streamer_id" +
+                                    $" WHERE streamers.name = '{streamerName}' ORDER BY {orderBy} {sortBy}")
                                     .AsEnumerable()
                                     .ToList();
-                            }
-                            return new List<Stream> {new Stream {game = "WRONG QUERY"}};
                         }
                     }
                 }
+                return new List<Stream> {new Stream {game = "WRONG QUERY"}};
             }
             return new List<Stream> {new Stream {game = "WRONG QUERY"}};
         }
