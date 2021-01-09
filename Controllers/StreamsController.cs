@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TomProxyApi.Models;
@@ -57,6 +58,17 @@ namespace TomProxyApi.Controllers
         public List<Stream> Get(Guid uuid)
         {
             return _db.Streams.Where(stream => stream.uuid == uuid).ToList();
+        }
+        
+        [HttpGet]
+        [Route("/streams/search")]
+        public List<Stream> Get(string streamerName, string query)
+        {
+            var upperQuery = query.ToUpper();
+            
+            return _db.Streamers.Any(str => str.name == streamerName) ?
+                _db.Streams.Where(str => str.title.ToUpper().Contains(upperQuery) || str.game.ToUpper().Contains(upperQuery)).ToList() :
+                new List<Stream> {new Stream {game = "WRONG QUERY"}};
         }
     }
 }
